@@ -30,15 +30,9 @@ export default function App() {
   return (
     <div className="container">
       <Form {...form}>
-        FORM
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <TextField
-            name="input"
-            label="INPUT"
-            required
-            placeholder="dsadas"
-            iconLeft={<Eye />}
-          />
+          <TextField name="input" label="INPUT" iconLeft={<Eye />} required />
+
           <CheckboxGroupField
             name="checkbox"
             data={[

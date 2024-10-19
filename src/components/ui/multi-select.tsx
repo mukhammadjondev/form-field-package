@@ -33,8 +33,8 @@ interface MultiSelectFormFieldProps
     VariantProps<typeof multiSelectVariants> {
   asChild?: boolean
   options: {
-    _id: string
-    name: string
+    value: string
+    label: string
     icon?: React.ComponentType<{ className?: string }>
   }[]
   defaultValue?: string[]
@@ -112,7 +112,7 @@ const MultiSelectFormField = React.forwardRef<
               <div className="flex justify-between items-center w-full">
                 <div className="flex flex-wrap items-center">
                   {selectedValues.map(value => {
-                    const option = options.find(o => o._id === value)
+                    const option = options.find(o => o.value === value)
                     const IconComponent = option?.icon
                     return (
                       <Badge
@@ -128,7 +128,7 @@ const MultiSelectFormField = React.forwardRef<
                         {IconComponent && (
                           <IconComponent className="h-4 w-4 mr-2" />
                         )}
-                        {option?.name}
+                        {option?.label}
                         <XCircle
                           className="ml-2 h-4 w-4 cursor-pointer"
                           onClick={event => {
@@ -178,11 +178,11 @@ const MultiSelectFormField = React.forwardRef<
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup>
                 {options.map(option => {
-                  const isSelected = selectedValuesSet.current.has(option._id)
+                  const isSelected = selectedValuesSet.current.has(option.value)
                   return (
                     <CommandItem
-                      key={option._id}
-                      onSelect={() => toggleOption(option._id)}
+                      key={option.value}
+                      onSelect={() => toggleOption(option.value)}
                       style={{
                         pointerEvents: 'auto',
                         opacity: 1,
@@ -202,7 +202,7 @@ const MultiSelectFormField = React.forwardRef<
                       {option.icon && (
                         <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
                       )}
-                      <span>{option.name}</span>
+                      <span>{option.label}</span>
                     </CommandItem>
                   )
                 })}

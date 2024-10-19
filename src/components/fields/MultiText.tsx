@@ -1,3 +1,4 @@
+import { InputHTMLAttributes, ReactNode } from "react"
 import { Plus, Trash2 } from "lucide-react"
 import { useFieldArray, useFormContext } from "react-hook-form"
 
@@ -12,10 +13,10 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 
-interface IProps {
+interface IProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string
   addBtnTitle: string
-  label?: string
+  label?: ReactNode
   description?: string
   required?: boolean
 }
@@ -26,6 +27,7 @@ export default function MultiTextField({
   description,
   required,
   addBtnTitle,
+  ...props
 }: IProps) {
   const { control } = useFormContext()
   const { fields, append, remove } = useFieldArray({ name, control })
@@ -34,10 +36,7 @@ export default function MultiTextField({
     <div>
       {label && (
         <FormLabel>
-          {`${label} `}
-          {required && (
-            <span className="text-red-500 dark:text-red-900">*</span>
-          )}
+          {label} {required && <span className="text-red-500 dark:text-red-900">*</span>}
         </FormLabel>
       )}
       <FormDescription>{description}</FormDescription>
@@ -50,7 +49,7 @@ export default function MultiTextField({
             <FormItem className="mb-4">
               <div className="relative flex items-center">
                 <FormControl className="w-full">
-                  <Input {...field} />
+                  <Input {...field} {...props} />
                 </FormControl>
                 {fields.length >= 1 && (
                   <Button

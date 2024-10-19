@@ -32,8 +32,7 @@ export default function TextAreaField({
         <FormItem>
           {label && (
             <FormLabel>
-              {`${label} `}
-              {required && <span className="text-red-500 dark:text-red-900">*</span>}
+              {label} {required && <span className="text-red-500 dark:text-red-900">*</span>}
             </FormLabel>
           )}
           <FormControl>

@@ -12,7 +12,7 @@ import {
 
 interface IProps {
   name: string;
-  label?: string | ReactNode;
+  label?: ReactNode;
   required?: boolean;
 }
 
@@ -34,7 +34,7 @@ export default function CheckboxField({ name, label, required }: IProps) {
             </FormControl>
             {label && (
               <FormLabel>
-                {label} {required && <span className="text-danger">*</span>}
+                {label} {required && <span className="text-red-500 dark:text-red-900">*</span>}
               </FormLabel>
             )}
           </div>

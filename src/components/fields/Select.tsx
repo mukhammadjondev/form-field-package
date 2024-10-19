@@ -1,3 +1,4 @@
+import { ReactNode } from "react"
 import { useFormContext } from "react-hook-form"
 
 import {
@@ -17,9 +18,9 @@ import {
 
 interface IProps {
   name: string
+  label?: ReactNode
+  data: { label: string; value: string; disabled?: boolean }[]
   placeholder?: string
-  data: { name: string; type: string; disabled?: boolean }[]
-  label?: string
   required?: boolean
 }
 
@@ -40,10 +41,7 @@ export default function SelectField({
         <FormItem>
           {label && (
             <FormLabel>
-              {`${label} `}
-              {required && (
-                <span className="text-red-500 dark:text-red-900">*</span>
-              )}
+              {label} {required && <span className="text-red-500 dark:text-red-900">*</span>}
             </FormLabel>
           )}
           <FormControl>
@@ -54,10 +52,10 @@ export default function SelectField({
               <SelectContent>
                 {data.map((item) => (
                   <SelectItem
-                    value={item.type}
-                    key={item.type}
+                    value={item.value}
+                    key={item.value}
                     disabled={item.disabled}>
-                    {item.name}
+                    {item.label}
                   </SelectItem>
                 ))}
               </SelectContent>

@@ -1,4 +1,5 @@
-import { X as CloseIcon, FileText } from "lucide-react"
+import { ReactNode } from "react"
+import { X as CloseIcon, FileText, Music } from "lucide-react"
 import { FileUploader } from "react-drag-drop-files"
 import { useFormContext } from "react-hook-form"
 
@@ -13,10 +14,9 @@ import {
 import calculateFileSize from "@/lib/calculateFileSize"
 import normalizeFileUrl from "@/lib/normalizeFileUrl"
 
-
 interface IProps {
   name: string
-  label?: string
+  label?: ReactNode
   required?: boolean
   isFileUpload?: boolean
 }
@@ -29,6 +29,10 @@ export default function FileField({
 }: IProps) {
   const { control } = useFormContext()
 
+  const acceptedTypes = isFileUpload
+    ? ['PDF', 'MP3', 'WAV', 'M4A']
+    : ['PNG', 'JPG', 'JPEG']
+
   return (
     <FormField
       control={control}
@@ -37,62 +41,77 @@ export default function FileField({
         <FormItem>
           {label && (
             <FormLabel>
-              {`${label} `}
-              {required && (
-                <span className="text-red-500 dark:text-red-900">*</span>
-              )}
+              {label} {required && <span className="text-red-500 dark:text-red-900">*</span>}
             </FormLabel>
           )}
           <FormControl>
             {value ? (
-              <div className="relative p-1 border rounded-md max-w-fit">
-                {value?.type?.includes("pdf") ? (
-                  <div className="flex items-center flex-1 gap-2">
-                    <FileText className="size-8 stroke-1" />
-                    <span className="truncate text-sm flex-[0.65]">
-                      {value.name}
-                    </span>
-                    <span className="text-sm flex-[0.2]">
+              <div className="relative p-2 border rounded-md max-w-fit">
+                {value.type?.includes('pdf') ? (
+                  <div className="flex items-center gap-2">
+                    <FileText className="w-6 h-6 stroke-1" />
+                    <span className="truncate text-sm">{value.name}</span>
+                    <span className="text-sm">
                       {calculateFileSize(value.size)}
                     </span>
                   </div>
+                ) : value.type?.includes('audio') ? (
+                  <div className="flex w-96 items-center gap-2">
+                    <Music className="w-6 h-6 stroke-1" />
+                    <span className="truncate text-sm">{value.name}</span>
+                    <span className="text-sm">
+                      {calculateFileSize(value.size)}
+                    </span>
+                    <audio
+                      controls
+                      src={URL.createObjectURL(value)}
+                      className="mt-2 w-full"
+                    />
+                  </div>
                 ) : (
-                  <>
-                    {value?.url?.includes("pdf") ? (
-                      <div className="flex items-center flex-1 gap-2 w-[380px]">
-                        <FileText className="size-8 stroke-1" />
-                        <span className="truncate text-sm flex-[0.8]">
-                          {value?.name}
-                        </span>
-                      </div>
+                  <div className="max-w-96">
+                    {typeof value === 'string' && value.includes('audios') ? (
+                      <audio
+                        controls
+                        src={normalizeFileUrl(value)}
+                        className="w-96"
+                      />
+                    ) : typeof value === 'string' && value.includes('files') ? (
+                      <a
+                        href={normalizeFileUrl(value)}
+                        target="_blank"
+                        className="underline text-blue-500"
+                      >
+                        {value}
+                      </a>
                     ) : (
-                      <div className="max-w-96">
-                        <img
-                          src={
-                            typeof value === "string" ||
-                            typeof value.url === "string"
-                              ? normalizeFileUrl(value)
-                              : URL.createObjectURL(value)
-                          }
-                          alt="preview"
-                          className="min-w-28"
-                        />
-                      </div>
+                      <img
+                        src={
+                          typeof value === 'string' ||
+                          typeof value.url === 'string'
+                            ? normalizeFileUrl(value)
+                            : URL.createObjectURL(value)
+                        }
+                        alt="preview"
+                        className="min-w-28 max-h-48 object-cover"
+                      />
                     )}
-                  </>
+                  </div>
                 )}
-
-                <div
-                  className="absolute top-2 right-2 cursor-pointer bg-slate-300/70"
-                  onClick={() => onChange("")}>
-                  <CloseIcon />
-                </div>
+                <button
+                  type="button"
+                  className="absolute top-2 right-2 p-1 bg-gray-200 rounded-full hover:bg-gray-300"
+                  onClick={() => onChange(null)}
+                >
+                  <CloseIcon className="w-4 h-4" />
+                </button>
               </div>
             ) : (
               <FileUploader
                 handleChange={onChange}
                 name="file"
-                types={isFileUpload ? ["PDF"] : ["PNG", "JPG"]}
+                types={acceptedTypes}
+                multiple={false}
               />
             )}
           </FormControl>

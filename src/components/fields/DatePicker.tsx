@@ -1,3 +1,4 @@
+import { ReactNode } from "react"
 import { format } from "date-fns"
 import { Calendar as CalendarIcon } from "lucide-react"
 import { useFormContext } from "react-hook-form"
@@ -21,7 +22,7 @@ import { cn } from "@/lib/utils"
 
 interface IProps {
   name: string
-  label?: string
+  label?: ReactNode
   placeholder?: string
   required?: boolean
   disabled?: boolean
@@ -44,10 +45,7 @@ export default function DatePickerField({
         <FormItem className="flex flex-col w-full">
           {label && (
             <FormLabel>
-              {`${label} `}
-              {required && (
-                <span className="text-red-500 dark:text-red-900">*</span>
-              )}
+              {label} {required && <span className="text-red-500 dark:text-red-900">*</span>}
             </FormLabel>
           )}
           <Popover>

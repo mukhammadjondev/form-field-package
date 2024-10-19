@@ -1,3 +1,4 @@
+import { ReactNode } from "react"
 import { useFormContext } from "react-hook-form"
 
 import {
@@ -11,8 +12,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
 interface IProps {
   name: string
-  data: { title: string; value: string }[]
-  label?: string
+  label?: ReactNode
+  data: { label: string; value: string }[]
   required?: boolean
 }
 
@@ -32,10 +33,7 @@ export default function RadioGroupField({
         <FormItem className="space-y-3">
           {label && (
             <FormLabel>
-              {`${label} `}
-              {required && (
-                <span className="text-red-500 dark:text-red-900">*</span>
-              )}
+              {label} {required && <span className="text-red-500 dark:text-red-900">*</span>}
             </FormLabel>
           )}
           <FormControl>
@@ -50,7 +48,7 @@ export default function RadioGroupField({
                   <FormControl>
                     <RadioGroupItem value={item.value} />
                   </FormControl>
-                  <FormLabel className="font-normal">{item.title}</FormLabel>
+                  <FormLabel className="font-normal">{item.label}</FormLabel>
                 </FormItem>
               ))}
             </RadioGroup>

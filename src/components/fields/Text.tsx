@@ -17,7 +17,7 @@ interface IProps extends InputProps {
   required?: boolean
 }
 
-const TextField = ({ required, name, label, extraLabel, ...props }: IProps) => {
+export default function TextField({ required, name, label, extraLabel, ...props }: IProps) {
   const { control } = useFormContext()
 
   return (
@@ -28,8 +28,7 @@ const TextField = ({ required, name, label, extraLabel, ...props }: IProps) => {
         <FormItem className="w-full">
           {label && (
             <FormLabel extraLabel={extraLabel}>
-              {`${label} `}
-              {required && <span className="text-red-500 dark:text-red-900">*</span>}
+              {label} {required && <span className="text-red-500 dark:text-red-900">*</span>}
             </FormLabel>
           )}
           <FormControl>
@@ -41,5 +40,3 @@ const TextField = ({ required, name, label, extraLabel, ...props }: IProps) => {
     />
   )
 }
-
-export default TextField

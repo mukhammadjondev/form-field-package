@@ -1,3 +1,4 @@
+import { ReactNode } from "react"
 import { useFormContext } from "react-hook-form"
 
 import { TimePicker } from "@/components/TimePicker"
@@ -11,7 +12,7 @@ import {
 
 interface IProps {
   name: string
-  label?: string
+  label?: ReactNode
   required?: boolean
 }
 
@@ -26,10 +27,7 @@ export default function DatePickerField({ required, name, label }: IProps) {
         <FormItem className="flex flex-col w-full">
           {label && (
             <FormLabel>
-              {`${label} `}
-              {required && (
-                <span className="text-red-500 dark:text-red-900">*</span>
-              )}
+              {label} {required && <span className="text-red-500 dark:text-red-900">*</span>}
             </FormLabel>
           )}
           <FormControl>

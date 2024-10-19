@@ -1,3 +1,4 @@
+import { ReactNode } from "react"
 import { useFormContext } from "react-hook-form"
 import QuillEditor from "react-quill"
 import "react-quill/dist/quill.snow.css"
@@ -12,7 +13,7 @@ import {
 
 interface IProps {
   name: string
-  label?: string
+  label?: ReactNode
   placeholder?: string
   required?: boolean
 }
@@ -57,10 +58,7 @@ export default function RichTextEditor({
         <FormItem>
           {label && (
             <FormLabel>
-              {`${label} `}
-              {required && (
-                <span className="text-red-500 dark:text-red-900">*</span>
-              )}
+              {label} {required && <span className="text-red-500 dark:text-red-900">*</span>}
             </FormLabel>
           )}
           <FormControl>

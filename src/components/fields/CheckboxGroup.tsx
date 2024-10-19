@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { Checkbox } from '@/components/ui/checkbox';
@@ -11,7 +12,7 @@ import {
 
 interface IProps {
   name: string;
-  label?: string;
+  label?: ReactNode;
   required?: boolean;
   data: { label: string; value: string }[];
   listClassName?: string;
@@ -34,7 +35,7 @@ export const CheckboxGroupField = ({
         <FormItem>
           {label && (
             <FormLabel>
-              {label} {required && <span className="text-danger">*</span>}
+              {label} {required && <span className="text-red-500 dark:text-red-900">*</span>}
             </FormLabel>
           )}
           <div className={listClassName}>
